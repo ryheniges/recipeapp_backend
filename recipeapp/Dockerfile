@@ -4,23 +4,34 @@ FROM python:3.12.4-slim
 # Realtime stdout/stderr
 ENV PYTHONUNBUFFERED 1
 
-ENV APP_USER = django_user
+ENV APP_USER=django_user
+ENV APP_USER_ID=1111
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends build-essential libpq-dev \
   && rm -rf /var/lib/apt/lists/*
 
+# Create and activate virtual environment
+RUN python -m venv /opt/venv
+
+# Upgrade pip and setuptools
+RUN /opt/venv/bin/pip install --upgrade pip setuptools
+
 COPY requirements.txt /tmp/requirements.txt
 
-RUN pip install --no-cache-dir -r /tmp/requirements.txt \
-    && rm -rf /tmp/requirements.txt \
-    && useradd -U $APP_USER \
+RUN /opt/venv/bin/pip install --no-cache-dir -r /tmp/requirements.txt \
+    && rm -rf /tmp/requirements.txt 
+
+RUN useradd -u ${APP_USER_ID} -m ${APP_USER} \
     && install -d -m 0755 -o $APP_USER -g $APP_USER /app/static
+
+ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /app
 USER $APP_USER:$APP_USER
 COPY --chown=$APP_USER:$APP_USER . .
-RUN chmod +x docker/*.sh
+RUN ls
+RUN chmod +x scripts/*.sh
 
-ENTRYPOINT [ "docker/entrypoint.sh" ]
-CMD [ "docker/start.sh", "server" ]
+ENTRYPOINT [ "scripts/entrypoint.sh" ]
+CMD [ "scripts/start.sh", "server" ]
