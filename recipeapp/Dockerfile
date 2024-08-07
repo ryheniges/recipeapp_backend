@@ -23,11 +23,11 @@ RUN /opt/venv/bin/pip install --no-cache-dir -r /tmp/requirements.txt \
     && rm -rf /tmp/requirements.txt 
 
 RUN useradd -u ${APP_USER_ID} -m ${APP_USER} \
-    && install -d -m 0755 -o $APP_USER -g $APP_USER /app/static
+    && install -d -m 0755 -o $APP_USER -g $APP_USER /django/static
 
 ENV PATH="/opt/venv/bin:$PATH"
 
-WORKDIR /app
+WORKDIR /django
 USER $APP_USER:$APP_USER
 COPY --chown=$APP_USER:$APP_USER . .
 RUN ls
