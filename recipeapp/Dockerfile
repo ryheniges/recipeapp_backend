@@ -28,10 +28,10 @@ RUN useradd -u ${APP_USER_ID} -m ${APP_USER} \
 ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /django
-USER $APP_USER:$APP_USER
 COPY --chown=$APP_USER:$APP_USER . .
 RUN ls
 RUN chmod +x scripts/*.sh
+USER $APP_USER:$APP_USER
 
 ENTRYPOINT [ "scripts/entrypoint.sh" ]
 CMD [ "scripts/start.sh", "server" ]

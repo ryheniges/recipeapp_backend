@@ -75,9 +75,13 @@ WSGI_APPLICATION = "recipeapp.wsgi.application"
 
 DATABASES = {
     "default": {
-        # TODO: https://docs.djangoproject.com/en/5.0/ref/settings/#std-setting-DATABASES
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        # TODO: Set from environment
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "recipeapp_db",
+        "PORT": "5432",
     }
 }
 
