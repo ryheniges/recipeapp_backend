@@ -34,4 +34,3 @@ RUN chmod +x scripts/*.sh
 USER $APP_USER:$APP_USER
 
 ENTRYPOINT [ "scripts/entrypoint.sh" ]
-CMD [ "scripts/start.sh", "server" ]
