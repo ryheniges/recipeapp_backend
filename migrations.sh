@@ -27,15 +27,17 @@ done
 docker start recipe_app
 docker start recipe_db  
 
+docker exec -it --user root recipe_app chown -R django_user:django_user /django/django/recipe_base/migrations
+
 if [ "$MAKEMIGRATION" = true ]; then
 # Run makemigrations command
     echo 'MIGRATIONS | Making migrations'
-    docker exec -it recipe_app python django/manage.py makemigrations
+    docker exec -it --user django_user:django_user recipe_app python django/manage.py makemigrations
 fi
 
 if [ "$MIGRATE" = true ]; then
     echo 'MIGRATIONS | Migrating'   
-    docker exec -it recipe_app python django/manage.py migrate
+    docker exec -it --user django_user:django_user recipe_app python django/manage.py migrate
 fi
 
 echo 'MIGRATIONS | Script complete!'

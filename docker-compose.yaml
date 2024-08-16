@@ -2,10 +2,13 @@ services:
   recipeapp_app: 
     build: .
     container_name: recipe_app
+    depends_on: 
+      recipeapp_db:
+        condition: service_healthy
     ports: 
       - '8000:8000'
     volumes:
-      - .:/djangos
+      - .:/django
   recipeapp_db:
     container_name: recipe_db
     image: postgres:16
@@ -13,6 +16,11 @@ services:
       - postgres_data:/var/lib/posgresql/data/
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
