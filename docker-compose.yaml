@@ -1,11 +1,13 @@
 services:
   recipeapp_app: 
     build: .
+    container_name: recipe_app
     ports: 
       - '8000:8000'
     volumes:
       - .:/djangos
   recipeapp_db:
+    container_name: recipe_db
     image: postgres:16
     volumes:
       - postgres_data:/var/lib/posgresql/data/
