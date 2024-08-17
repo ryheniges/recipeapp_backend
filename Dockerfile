@@ -31,7 +31,6 @@ WORKDIR /django
 COPY --chown=$APP_USER:$APP_USER . .
 RUN ls
 RUN chmod +x scripts/*.sh
-# RUN chmod -R 755 /django/django/recipe_base/migrations
 USER $APP_USER:$APP_USER
 
 ENTRYPOINT [ "scripts/entrypoint.sh" ]

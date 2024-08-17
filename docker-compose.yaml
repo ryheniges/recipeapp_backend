@@ -13,7 +13,7 @@ services:
     container_name: recipe_db
     image: postgres:16
     volumes:
-      - postgres_data:/var/lib/posgresql/data/
+      - postgres_data:/var/lib/postgresql/data/
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
     healthcheck:
@@ -24,3 +24,4 @@ services:
 
 volumes:
   postgres_data:
+    name: postgres_data
