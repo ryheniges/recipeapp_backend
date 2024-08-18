@@ -1,3 +1,4 @@
+<body>
 <form action="{% url 'base:vote' question.id %}" method="post">
     {% csrf_token %}
     <fieldset>
@@ -12,3 +13,4 @@
     </fieldset>
     <input type="submit" value="Vote">
 </form>
+</body>

@@ -17,8 +17,15 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from debug_toolbar.toolbar import debug_toolbar_urls
+from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("base/", include("recipe_base.urls")),
 ]
+
+if not settings.TESTING:
+    urlpatterns = [
+        *urlpatterns,
+    ] + debug_toolbar_urls()
