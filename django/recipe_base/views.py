@@ -1,3 +1,5 @@
+import requests
+
 from django.db.models import F
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -6,6 +8,7 @@ from django.views import generic
 from django.utils import timezone
 from django.template import loader
 from .models import Question, Choice
+from .forms import RecipeSearch
 
 
 class IndexView(generic.ListView):
@@ -56,3 +59,25 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse("base:results", args=(question.id,)))
+
+
+def search_view(request):
+    results = []
+    if request.method == "GET":
+        form = RecipeSearch(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data["query"]
+            # TODO: Retrieve from .env
+            api_url = 
+
+            # Make a request to the external API
+            response = requests.get(api_url)
+            if response.status_code == 200:
+                results = response.json().get("results", [])
+            else:
+                # Handle error response from API
+                results = [{"error": "Failed to retrieve data"}]
+    else:
+        form = RecipeSearch()
+
+    return render(request, "search.html", {"form": form, "results": results})
