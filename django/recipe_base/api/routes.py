@@ -12,5 +12,11 @@ def list_recipes(request):
 
 
 @router.get("/{id}")
-def list_recipes(request):
+def get_recipes(request):
     return get_object_or_404(Recipe, pk=id)
+
+
+@router.post("/")
+def create_recipe(request, payload: RecipeSchema):
+    recipe = Recipe.objects.create(**payload.dict())
+    return {"id": recipe.id}
